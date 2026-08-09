@@ -27,7 +27,7 @@
       'Email: ' + g('email') + '\n' +
       'Type: ' + g('type') + '\n' +
       'Budget: ' + g('budget') + '\n\n' +
-      'Details:\n' + g('message') + '\n\n— Sent from sarahtalksreality.com';
+      'Details:\n' + g('message') + '\n\n— Sent from sarahtalks.tv';
     window.location.href = 'mailto:craig@kinetic-mgmt.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     var note = document.getElementById('formNote');
     if (note) note.style.display = 'block';
