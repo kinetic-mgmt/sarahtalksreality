@@ -242,3 +242,18 @@ html{overflow-x:hidden}
   .nav-right{gap:10px}
   .nav-right .btn-primary{display:none}   /* Get-the-App lives in the hero + menu on mobile */
 }
+
+/* find sarah — socials + link list (linktree on-site) */
+.sociicons{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:0 auto 26px}
+.sociicons a{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);color:var(--ink);box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s}
+.sociicons a:hover{transform:translateY(-3px);border-color:var(--rasp);color:var(--rasp)}
+.sociicons svg{width:24px;height:24px;fill:currentColor}
+.linklist{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.linkbtn{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow);transition:transform .18s ease,border-color .18s}
+.linkbtn:hover{transform:translateY(-2px);border-color:var(--rasp)}
+.linkbtn .ic{width:44px;height:44px;border-radius:12px;flex:none;margin:0}
+.linkbtn b{font-weight:700;font-size:1.02rem}
+.linkbtn small{display:block;font-weight:500;color:var(--muted);font-size:.85rem;margin-top:1px}
+.linkbtn .arr{margin-left:auto;color:var(--muted);flex:none}
+.linkbtn .arr svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.linkbtn:hover .arr{color:var(--rasp)}
