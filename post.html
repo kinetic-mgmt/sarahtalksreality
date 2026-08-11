@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sarah Talks — Blog</title>
+<meta name="description" content="A post from Sarah Talks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav"><div class="wrap nav-in">
+  <a href="index.html" class="brand"><img class="logo" src="assets/sarah-logo-trim.png" alt="Sarah Talks"></a>
+  <nav class="nav-right">
+    <div class="nav-links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="app.html">The App</a>
+      <a href="watch-parties.html">Watch Parties</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="book.html">Book Sarah</a>
+    </div>
+    <a href="app.html" class="btn btn-primary">Get the App</a>
+    <button class="toggle" id="themeBtn" aria-label="Toggle theme"></button>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+  </nav>
+</div></header>
+
+<main>
+  <section style="padding-top:34px">
+    <div class="wrap">
+      <article class="article" id="article">
+        <a class="backlink" href="blog.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> All posts</a>
+        <p class="blog-empty" id="loading">Loading…</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="final">
+        <h2>Don't watch <span class="script">alone.</span></h2>
+        <p>Get Sarah's BB Bible and join the loudest reality TV family on the internet.</p>
+        <div class="cta-row"><a href="app.html" class="btn btn-primary">Get the App</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <div class="foot-in">
+    <div>
+      <a href="index.html" class="brand"><img class="logo" src="assets/sarah-logo-trim.png" alt="Sarah Talks"></a>
+      <p class="muted" style="margin:10px 0 0;max-width:34ch">Your reality TV bible — live spoilers, superfan chat &amp; watch parties.</p>
+      <a class="foot-mail" href="mailto:sarah@sarahtalks.tv">sarah@sarahtalks.tv</a>
+    </div>
+    <div class="foot-links">
+      <a href="about.html">About</a><a href="app.html">The App</a><a href="watch-parties.html">Watch Parties</a><a href="blog.html">Blog</a><a href="book.html">Book Sarah</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms</a>
+    </div>
+  </div>
+  <div class="kinetic">
+    <span>&copy; <span id="yr">2026</span> Sarah Talks. All rights reserved.</span>
+    <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b> &mdash; apps &amp; sites for creators &rarr;</a>
+  </div>
+</div></footer>
+<script src="app.js"></script>
+<script src="blog.js"></script>
+<script>
+(function(){
+  var art = document.getElementById('article');
+  var slug = new URLSearchParams(location.search).get('slug');
+  var fmt = function(d){ try { return new Date(d).toLocaleDateString(undefined,{month:'long',day:'numeric',year:'numeric'}); } catch(e){ return ''; } };
+  if(!slug){ art.innerHTML = '<p class="blog-empty">Post not found.</p>'; return; }
+  Blog.get(slug).then(function(p){
+    if(!p){ art.innerHTML = '<a class="backlink" href="blog.html">&larr; All posts</a><p class="blog-empty">This post isn’t available.</p>'; return; }
+    document.title = p.title + ' — Sarah Talks';
+    var cover = p.cover_url ? '<img class="article-cover" src="'+Blog.esc(p.cover_url)+'" alt="">' : '';
+    var tag = p.tag ? '<span class="tag" style="display:inline-block;margin:14px 0 4px">'+Blog.esc(p.tag)+'</span><br>' : '';
+    art.innerHTML =
+      '<a class="backlink" href="blog.html"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> All posts</a>'
+      + tag
+      + '<h1>'+Blog.esc(p.title)+'</h1>'
+      + '<p class="art-meta">'+Blog.esc(p.author_name||'Sarah')+' · '+fmt(p.published_at||p.created_at)+'</p>'
+      + cover
+      + '<div class="prose">'+Blog.render(p.body)+'</div>';
+  }).catch(function(){
+    art.innerHTML = '<a class="backlink" href="blog.html">&larr; All posts</a><p class="blog-empty">Could not load this post.</p>';
+  });
+})();
+</script>
+</body>
+</html>
