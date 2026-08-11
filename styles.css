@@ -363,3 +363,8 @@ html{overflow-x:hidden}
 .pcard-cover.noimg{background:linear-gradient(135deg,var(--rose-deep),var(--rasp) 60%,var(--amber));
   display:flex;align-items:center;justify-content:center;text-align:center;padding:16px}
 .pcard-cover.noimg .ph{font-family:"Pinyon Script",cursive;font-size:2.2rem;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18)}
+
+/* subtle "Built by Kinetic" on the app page */
+.built-by{margin:22px 0 0;font-family:"JetBrains Mono",monospace;font-size:.82rem;letter-spacing:.04em;color:rgba(255,255,255,.7)}
+.built-by a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.45);padding-bottom:1px;transition:border-color .15s ease}
+.built-by a:hover{border-color:#fff}
