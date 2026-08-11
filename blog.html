@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -56,29 +56,29 @@
     <div class="foot-links">
       <a href="about.html">About</a><a href="app.html">The App</a><a href="watch-parties.html">Watch Parties</a><a href="blog.html">Blog</a><a href="book.html">Book Sarah</a>
       <a href="privacy.html">Privacy</a>
-      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms</a>
+      <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener">Terms</a><a href="write.html" style="opacity:.5">Write</a>
     </div>
   </div>
   <div class="kinetic">
     <span>&copy; <span id="yr">2026</span> Sarah Talks. All rights reserved.</span>
-    <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b> &mdash; apps &amp; sites for creators &rarr;</a>
+    <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b> &mdash; social, branding, sites, podcasts &amp; partnerships &rarr;</a>
   </div>
 </div></footer>
-<script src="app.js"></script>
-<script src="blog.js"></script>
+<script src="app.js?v=2"></script>
+<script src="blog.js?v=2"></script>
 <script>
 (function(){
   var list = document.getElementById('list');
   var fmt = function(d){ try { return new Date(d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); } catch(e){ return ''; } };
   Blog.list().then(function(posts){
     if(!posts || !posts.length){
-      list.innerHTML = '<p class="blog-empty">No posts yet — check back soon. 🖤</p>';
+      list.innerHTML = '<p class="blog-empty">No posts yet — check back soon.</p>';
       return;
     }
     list.innerHTML = posts.map(function(p){
       var cover = p.cover_url
         ? '<div class="pcard-cover" style="background-image:url(\''+Blog.esc(p.cover_url)+'\')"></div>'
-        : '<div class="pcard-cover"></div>';
+        : '<div class="pcard-cover noimg"><span class="ph">Sarah Talks</span></div>';
       var tag = p.tag ? '<span class="tag">'+Blog.esc(p.tag)+'</span>' : '';
       var ex = p.excerpt ? '<p>'+Blog.esc(p.excerpt)+'</p>' : '';
       return '<a class="pcard" href="post.html?slug='+encodeURIComponent(p.slug)+'">'

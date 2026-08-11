@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -84,8 +84,8 @@ Blank line = new paragraph.
   </section>
 </main>
 
-<script src="app.js"></script>
-<script src="blog.js"></script>
+<script src="app.js?v=2"></script>
+<script src="blog.js?v=2"></script>
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
@@ -145,7 +145,7 @@ Blank line = new paragraph.
       }
       var row = Array.isArray(res.body)? res.body[0] : res.body;
       if(row && row.id){ $('postId').value=row.id; $('edTitleHead').textContent=row.title; $('newBtn').style.display='inline-flex'; }
-      note($('edNote'), published?'Published — it’s live on the blog! 🖤':'Draft saved.', true);
+      note($('edNote'), published?'Published — it’s live on the blog!':'Draft saved.', true);
       loadDrafts();
     }).catch(function(){ note($('edNote'),'Network error — try again.',false); });
   }
