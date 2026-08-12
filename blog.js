@@ -1,4 +1,4 @@
-// Sarah Talks — Blog data layer (Supabase REST, no external libs)
+// Sarah Talks, Blog data layer (Supabase REST, no external libs)
 window.Blog = (function () {
   var URL = 'https://mnuhcigcfakypdiycagw.supabase.co';
   var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo';

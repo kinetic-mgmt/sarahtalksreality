@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Write a post — Sarah Talks</title>
+<title>Write a post · Sarah Talks</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,7 +49,7 @@
         <input type="hidden" id="postId">
         <div class="ed-field">
           <label>Title</label>
-          <input id="fTitle" placeholder="e.g. The Drew flip explained — Night 34 feeds">
+          <input id="fTitle" placeholder="e.g. The Drew flip explained, Night 34 feeds">
         </div>
         <div class="ed-row">
           <div class="ed-field"><label>Tag (optional)</label><input id="fTag" placeholder="Live Feeds"></div>
@@ -139,15 +139,15 @@ Blank line = new paragraph.
     p.then(function(res){
       if(!res.ok){
         var msg=(res.body && (res.body.message||res.body.hint)) || ('Error '+res.status);
-        if(res.status===401||res.status===403) msg='Not authorized — is this the Sarah/admin login?';
-        if(String(res.body && res.body.code)==='23505') msg='A post with a very similar title exists — tweak the title.';
+        if(res.status===401||res.status===403) msg='Not authorized, is this the Sarah/admin login?';
+        if(String(res.body && res.body.code)==='23505') msg='A post with a very similar title exists, tweak the title.';
         note($('edNote'), msg, false); return;
       }
       var row = Array.isArray(res.body)? res.body[0] : res.body;
       if(row && row.id){ $('postId').value=row.id; $('edTitleHead').textContent=row.title; $('newBtn').style.display='inline-flex'; }
-      note($('edNote'), published?'Published — it’s live on the blog!':'Draft saved.', true);
+      note($('edNote'), published?'Published, it’s live on the blog!':'Draft saved.', true);
       loadDrafts();
-    }).catch(function(){ note($('edNote'),'Network error — try again.',false); });
+    }).catch(function(){ note($('edNote'),'Network error, try again.',false); });
   }
   $('saveDraftBtn').addEventListener('click', function(){ save(false); });
   $('publishBtn').addEventListener('click', function(){ save(true); });
@@ -157,7 +157,7 @@ Blank line = new paragraph.
     Blog.myPosts().then(function(rows){
       var box=$('drafts');
       if(!Array.isArray(rows)){ box.innerHTML=''; return; }
-      if(!rows.length){ box.innerHTML='<p class="muted" style="text-align:center">No posts yet — your first one goes here.</p>'; return; }
+      if(!rows.length){ box.innerHTML='<p class="muted" style="text-align:center">No posts yet, your first one goes here.</p>'; return; }
       box.innerHTML = '<h3 style="font-family:\'Playfair Display\',serif;margin:0 0 8px">Your posts</h3>' + rows.map(function(r){
         var badge = r.published? '<span class="badge-live">LIVE</span>':'<span class="badge-draft">DRAFT</span>';
         return '<div class="draft-row"><div class="grow"><b>'+Blog.esc(r.title)+'</b><small>'+badge+' · '+Blog.esc(r.slug)+'</small></div>'
@@ -179,7 +179,7 @@ Blank line = new paragraph.
       $('postId').value=p.id; $('fTitle').value=p.title||''; $('fTag').value=p.tag||'';
       $('fCover').value=p.cover_url||''; $('fExcerpt').value=p.excerpt||''; $('fBody').value=p.body||'';
       $('edTitleHead').textContent=p.title; $('newBtn').style.display='inline-flex';
-      note($('edNote'), p.published?'Editing a LIVE post — Publish saves changes.':'Editing a draft.', true);
+      note($('edNote'), p.published?'Editing a LIVE post, Publish saves changes.':'Editing a draft.', true);
       window.scrollTo({top:0,behavior:'smooth'});
     });
   }

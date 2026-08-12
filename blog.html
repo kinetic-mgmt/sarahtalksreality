@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Feed — Sarah Talks Blog</title>
-<meta name="description" content="Live feed updates, thought pieces, and hot takes from Sarah — Big Brother, Survivor, The Traitors & more.">
+<title>The Feed · Sarah Talks Blog</title>
+<meta name="description" content="Live feed updates, thought pieces, and hot takes from Sarah, Big Brother, Survivor, The Traitors & more.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
     <div class="wrap">
       <span class="eyebrow">The Feed</span>
       <h1 class="title" style="margin-top:10px;font-size:clamp(2.4rem,6vw,4rem)">Live feed drops <span class="script">&amp; hot takes</span></h1>
-      <p class="lede" style="max-width:56ch">The long-form corner — feed recaps, thought pieces, and receipts. New drops all season.</p>
+      <p class="lede" style="max-width:56ch">The long-form corner, feed recaps, thought pieces, and receipts. New drops all season.</p>
     </div>
   </section>
 
@@ -50,7 +50,7 @@
   <div class="foot-in">
     <div>
       <a href="index.html" class="brand"><img class="logo" src="assets/sarah-logo-trim.png" alt="Sarah Talks"></a>
-      <p class="muted" style="margin:10px 0 0;max-width:34ch">Your reality TV bible — live spoilers, superfan chat &amp; watch parties.</p>
+      <p class="muted" style="margin:10px 0 0;max-width:34ch">Your reality TV bible, live spoilers, superfan chat &amp; watch parties.</p>
       <a class="foot-mail" href="mailto:sarah@sarahtalks.tv">sarah@sarahtalks.tv</a>
     </div>
     <div class="foot-links">
@@ -61,7 +61,7 @@
   </div>
   <div class="kinetic">
     <span>&copy; <span id="yr">2026</span> Sarah Talks. All rights reserved.</span>
-    <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b> &mdash; social, branding, sites, podcasts &amp; partnerships &rarr;</a>
+    <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b>, social, branding, sites, podcasts &amp; partnerships &rarr;</a>
   </div>
 </div></footer>
 <script src="app.js?v=2"></script>
@@ -72,7 +72,7 @@
   var fmt = function(d){ try { return new Date(d).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); } catch(e){ return ''; } };
   Blog.list().then(function(posts){
     if(!posts || !posts.length){
-      list.innerHTML = '<p class="blog-empty">No posts yet — check back soon.</p>';
+      list.innerHTML = '<p class="blog-empty">No posts yet, check back soon.</p>';
       return;
     }
     list.innerHTML = posts.map(function(p){
