@@ -368,3 +368,7 @@ html{overflow-x:hidden}
 .built-by{margin:22px 0 0;font-family:"JetBrains Mono",monospace;font-size:.82rem;letter-spacing:.04em;color:rgba(255,255,255,.7)}
 .built-by a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.45);padding-bottom:1px;transition:border-color .15s ease}
 .built-by a:hover{border-color:#fff}
+
+/* Log In pill — entry point to the web app (app.sarahtalks.tv) */
+.nav-links a.nav-login{color:var(--rasp);border:1.5px solid var(--rasp);border-radius:999px;padding:6px 16px}
+.nav-links a.nav-login:hover{background:var(--rasp);color:#fff}
