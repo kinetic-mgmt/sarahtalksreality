@@ -4,6 +4,7 @@ window.Blog = (function () {
   var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo';
   var REST = URL + '/rest/v1/blog_posts';
   var TOKEN_KEY = 'sarah_blog_token';
+  var REFRESH_KEY = 'sarah_blog_refresh';
 
   function esc(s) {
     return String(s == null ? '' : s)
@@ -63,28 +64,77 @@ window.Blog = (function () {
       method: 'POST', headers: { 'apikey': ANON, 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: email, password: password })
     }).then(function (r) { return r.json(); }).then(function (d) {
-      if (d && d.access_token) { localStorage.setItem(TOKEN_KEY, d.access_token); return d; }
+      if (d && d.access_token) {
+        localStorage.setItem(TOKEN_KEY, d.access_token);
+        if (d.refresh_token) localStorage.setItem(REFRESH_KEY, d.refresh_token);
+        return d;
+      }
       throw new Error((d && (d.error_description || d.msg)) || 'Login failed');
     });
   }
-  function logout() { localStorage.removeItem(TOKEN_KEY); }
+  function logout() { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(REFRESH_KEY); }
   function isLoggedIn() { return !!localStorage.getItem(TOKEN_KEY); }
 
+  // Exchange the stored refresh token for a fresh access token. Rejects (and
+  // clears the session) when the refresh token is missing or itself expired.
+  function refresh() {
+    var rt = localStorage.getItem(REFRESH_KEY);
+    if (!rt) return Promise.reject(authError());
+    return fetch(URL + '/auth/v1/token?grant_type=refresh_token', {
+      method: 'POST', headers: { 'apikey': ANON, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: rt })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.access_token) {
+        localStorage.setItem(TOKEN_KEY, d.access_token);
+        if (d.refresh_token) localStorage.setItem(REFRESH_KEY, d.refresh_token);
+        return d.access_token;
+      }
+      logout(); throw authError();
+    });
+  }
+  function authError() { var e = new Error('Your session expired. Please sign in again.'); e.auth = true; return e; }
+
+  function authHeaders(extra) {
+    var tok = localStorage.getItem(TOKEN_KEY) || ANON;
+    var h = { 'apikey': ANON, 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + tok };
+    if (extra) Object.keys(extra).forEach(function (k) { h[k] = extra[k]; });
+    return h;
+  }
+  // Authenticated fetch that transparently refreshes the token once on a 401.
+  function authedFetch(url, opts) {
+    opts = opts || {};
+    function go() { var o = Object.assign({}, opts); o.headers = authHeaders(opts.headers); return fetch(url, o); }
+    return go().then(function (r) {
+      if (r.status !== 401) return r;
+      return refresh().then(function () { return go(); });
+    });
+  }
+  // Resolve the response body, but surface auth failures as a rejection so the
+  // caller can send the user back to the login screen instead of showing blank.
+  function authedJson(url, opts) {
+    return authedFetch(url, opts).then(function (r) {
+      if (r.status === 401 || r.status === 403) throw authError();
+      return r.json();
+    });
+  }
+  function authedWrite(url, opts) {
+    return authedFetch(url, opts).then(function (r) {
+      return r.json().then(function (b) { return { ok: r.ok, status: r.status, body: b }; });
+    });
+  }
+
   function myPosts() {
-    return fetch(REST + '?select=id,slug,title,published,published_at,created_at&order=created_at.desc', { headers: headers(true) })
-      .then(function (r) { return r.json(); });
+    return authedJson(REST + '?select=id,slug,title,published,published_at,created_at&order=created_at.desc');
+  }
+  function getForEdit(idOrSlug, bySlug) {
+    var q = bySlug ? ('slug=eq.' + encodeURIComponent(idOrSlug)) : ('id=eq.' + encodeURIComponent(idOrSlug));
+    return authedJson(REST + '?select=*&' + q + '&limit=1').then(function (a) { return a && a[0]; });
   }
   function create(post) {
-    return fetch(REST, {
-      method: 'POST', headers: Object.assign(headers(true), { 'Prefer': 'return=representation' }),
-      body: JSON.stringify(post)
-    }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, status: r.status, body: b }; }); });
+    return authedWrite(REST, { method: 'POST', headers: { 'Prefer': 'return=representation' }, body: JSON.stringify(post) });
   }
   function update(id, patch) {
-    return fetch(REST + '?id=eq.' + encodeURIComponent(id), {
-      method: 'PATCH', headers: Object.assign(headers(true), { 'Prefer': 'return=representation' }),
-      body: JSON.stringify(patch)
-    }).then(function (r) { return r.json().then(function (b) { return { ok: r.ok, status: r.status, body: b }; }); });
+    return authedWrite(REST + '?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: { 'Prefer': 'return=representation' }, body: JSON.stringify(patch) });
   }
 
   function slugify(s) {
@@ -96,6 +146,6 @@ window.Blog = (function () {
   return {
     esc: esc, render: render, list: list, get: get,
     login: login, logout: logout, isLoggedIn: isLoggedIn,
-    myPosts: myPosts, create: create, update: update, slugify: slugify
+    myPosts: myPosts, getForEdit: getForEdit, create: create, update: update, slugify: slugify
   };
 })();

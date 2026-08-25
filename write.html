@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -42,9 +42,12 @@
       <!-- EDITOR -->
       <div class="editor-wrap" id="editor" style="display:none">
         <div class="sec-head" style="text-align:left;margin-bottom:18px">
-          <span class="eyebrow">New post</span>
+          <span class="eyebrow" id="edEyebrow">Write a post</span>
           <h1 style="font-size:clamp(1.9rem,5vw,2.6rem);margin:8px 0 0" id="edTitleHead">Write a post</h1>
         </div>
+
+        <!-- Post picker: choose anything to edit -->
+        <div class="draft-list" id="drafts"></div>
 
         <input type="hidden" id="postId">
         <div class="ed-field">
@@ -76,21 +79,23 @@ Blank line = new paragraph.
           <button class="btn btn-ghost btn-sm" id="newBtn" style="display:none">+ New post</button>
           <span class="ed-note" id="edNote"></span>
         </div>
-
-        <div class="draft-list" id="drafts"></div>
       </div>
 
     </div>
   </section>
 </main>
 
-<script src="app.js?v=2"></script>
-<script src="blog.js?v=2"></script>
+<script src="app.js?v=3"></script>
+<script src="blog.js?v=3"></script>
 <script>
 (function(){
   var $ = function(id){ return document.getElementById(id); };
   var loginCard=$('loginCard'), editor=$('editor'), logoutBtn=$('logoutBtn');
   function note(el,msg,ok){ el.textContent=msg; el.style.color = ok? 'var(--sage)':'var(--rasp)'; }
+
+  // A post id/slug to auto-open once we're authenticated (from ?edit=…).
+  var params = new URLSearchParams(location.search);
+  var pendingEdit = params.get('edit');
 
   function showEditor(on){
     loginCard.style.display = on ? 'none':'block';
@@ -98,12 +103,18 @@ Blank line = new paragraph.
     logoutBtn.style.display = on ? 'inline-flex':'none';
     if(on) loadDrafts();
   }
+  // Session died (expired token, no refresh): bounce back to the login screen.
+  function sessionExpired(){
+    Blog.logout();
+    showEditor(false);
+    note($('loginNote'), 'Your session expired. Please sign in again.', false);
+  }
 
   // ---- login ----
   $('loginBtn').addEventListener('click', function(){
     var b=this; b.disabled=true; note($('loginNote'),'Signing in…',true);
     Blog.login($('email').value.trim(), $('password').value)
-      .then(function(){ showEditor(true); })
+      .then(function(){ note($('loginNote'),'',true); showEditor(true); })
       .catch(function(e){ note($('loginNote'), e.message || 'Login failed', false); })
       .finally(function(){ b.disabled=false; });
   });
@@ -114,7 +125,8 @@ Blank line = new paragraph.
   function clearForm(){
     $('postId').value=''; $('fTitle').value=''; $('fTag').value='';
     $('fCover').value=''; $('fExcerpt').value=''; $('fBody').value='';
-    $('edTitleHead').textContent='Write a post'; $('newBtn').style.display='none';
+    $('edEyebrow').textContent='New post'; $('edTitleHead').textContent='Write a post';
+    $('newBtn').style.display='none';
     note($('edNote'),'',true);
   }
   $('newBtn').addEventListener('click', clearForm);
@@ -139,48 +151,61 @@ Blank line = new paragraph.
     p.then(function(res){
       if(!res.ok){
         var msg=(res.body && (res.body.message||res.body.hint)) || ('Error '+res.status);
-        if(res.status===401||res.status===403) msg='Not authorized, is this the Sarah/admin login?';
+        if(res.status===401||res.status===403){ sessionExpired(); return; }
         if(String(res.body && res.body.code)==='23505') msg='A post with a very similar title exists, tweak the title.';
         note($('edNote'), msg, false); return;
       }
       var row = Array.isArray(res.body)? res.body[0] : res.body;
-      if(row && row.id){ $('postId').value=row.id; $('edTitleHead').textContent=row.title; $('newBtn').style.display='inline-flex'; }
+      if(row && row.id){ $('postId').value=row.id; $('edEyebrow').textContent='Editing'; $('edTitleHead').textContent=row.title; $('newBtn').style.display='inline-flex'; }
       note($('edNote'), published?'Published, it’s live on the blog!':'Draft saved.', true);
       loadDrafts();
-    }).catch(function(){ note($('edNote'),'Network error, try again.',false); });
+    }).catch(function(e){
+      if(e && e.auth){ sessionExpired(); return; }
+      note($('edNote'),'Network error, try again.',false);
+    });
   }
   $('saveDraftBtn').addEventListener('click', function(){ save(false); });
   $('publishBtn').addEventListener('click', function(){ save(true); });
 
-  // ---- drafts / posts list ----
+  // ---- post picker (choose anything to edit) ----
   function loadDrafts(){
+    var box=$('drafts');
+    box.innerHTML='<p class="muted" style="margin:0 0 6px">Loading your posts…</p>';
     Blog.myPosts().then(function(rows){
-      var box=$('drafts');
-      if(!Array.isArray(rows)){ box.innerHTML=''; return; }
-      if(!rows.length){ box.innerHTML='<p class="muted" style="text-align:center">No posts yet, your first one goes here.</p>'; return; }
-      box.innerHTML = '<h3 style="font-family:\'Playfair Display\',serif;margin:0 0 8px">Your posts</h3>' + rows.map(function(r){
-        var badge = r.published? '<span class="badge-live">LIVE</span>':'<span class="badge-draft">DRAFT</span>';
-        return '<div class="draft-row"><div class="grow"><b>'+Blog.esc(r.title)+'</b><small>'+badge+' · '+Blog.esc(r.slug)+'</small></div>'
-          + '<button class="btn btn-ghost btn-sm" data-edit="'+r.id+'">Edit</button>'
-          + (r.published? '' : '') + '</div>';
-      }).join('');
+      if(!Array.isArray(rows)) rows=[];
+      var head='<div class="picker-head"><h3>Your posts</h3><button class="btn btn-ghost btn-sm" id="pickNew">+ Write a new post</button></div>';
+      if(!rows.length){ box.innerHTML=head+'<p class="muted" style="text-align:center;margin:8px 0 0">No posts yet, your first one goes here.</p>'; }
+      else {
+        box.innerHTML = head + rows.map(function(r){
+          var badge = r.published? '<span class="badge-live">LIVE</span>':'<span class="badge-draft">DRAFT</span>';
+          return '<div class="draft-row"><div class="grow"><b>'+Blog.esc(r.title)+'</b><small>'+badge+' · '+Blog.esc(r.slug)+'</small></div>'
+            + '<button class="btn btn-primary btn-sm" data-edit="'+r.id+'">Edit</button></div>';
+        }).join('');
+      }
+      $('pickNew').addEventListener('click', function(){ clearForm(); $('fTitle').focus(); window.scrollTo({top:$('fTitle').offsetTop-120,behavior:'smooth'}); });
       Array.prototype.forEach.call(box.querySelectorAll('[data-edit]'), function(btn){
         btn.addEventListener('click', function(){ openPost(btn.getAttribute('data-edit')); });
       });
+      // Fulfil a ?edit=… deep link now that the session is confirmed good.
+      if(pendingEdit){ var want=pendingEdit; pendingEdit=null; openPost(want, true); }
+    }).catch(function(e){
+      if(e && e.auth){ sessionExpired(); return; }
+      box.innerHTML='<p class="muted" style="text-align:center">Could not load your posts. <a href="write.html">Retry</a></p>';
     });
   }
-  function openPost(id){
-    Blog.myPosts(); // ensure token
-    fetch('https://mnuhcigcfakypdiycagw.supabase.co/rest/v1/blog_posts?select=*&id=eq.'+id, {
-      headers: { 'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo',
-        'Authorization':'Bearer '+(localStorage.getItem('sarah_blog_token')||'') }
-    }).then(function(r){return r.json();}).then(function(a){
-      var p=a&&a[0]; if(!p) return;
-      $('postId').value=p.id; $('fTitle').value=p.title||''; $('fTag').value=p.tag||'';
-      $('fCover').value=p.cover_url||''; $('fExcerpt').value=p.excerpt||''; $('fBody').value=p.body||'';
-      $('edTitleHead').textContent=p.title; $('newBtn').style.display='inline-flex';
-      note($('edNote'), p.published?'Editing a LIVE post, Publish saves changes.':'Editing a draft.', true);
-      window.scrollTo({top:0,behavior:'smooth'});
+
+  function fill(p){
+    if(!p){ note($('edNote'),'That post could not be found.',false); return; }
+    $('postId').value=p.id; $('fTitle').value=p.title||''; $('fTag').value=p.tag||'';
+    $('fCover').value=p.cover_url||''; $('fExcerpt').value=p.excerpt||''; $('fBody').value=p.body||'';
+    $('edEyebrow').textContent='Editing'; $('edTitleHead').textContent=p.title; $('newBtn').style.display='inline-flex';
+    note($('edNote'), p.published?'Editing a LIVE post — Publish saves changes.':'Editing a draft.', true);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function openPost(idOrSlug, bySlug){
+    Blog.getForEdit(idOrSlug, !!bySlug).then(fill).catch(function(e){
+      if(e && e.auth){ sessionExpired(); return; }
+      note($('edNote'),'Could not open that post.',false);
     });
   }
 

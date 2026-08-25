@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=2">
+<link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -65,8 +65,8 @@
     <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b>, social, branding, sites, podcasts &amp; partnerships &rarr;</a>
   </div>
 </div></footer>
-<script src="app.js?v=2"></script>
-<script src="blog.js?v=2"></script>
+<script src="app.js?v=3"></script>
+<script src="blog.js?v=3"></script>
 <script>
 (function(){
   var list = document.getElementById('list');
@@ -76,17 +76,22 @@
       list.innerHTML = '<p class="blog-empty">No posts yet, check back soon.</p>';
       return;
     }
+    var admin = Blog.isLoggedIn();
     list.innerHTML = posts.map(function(p){
       var cover = p.cover_url
-        ? '<div class="pcard-cover" style="background-image:url(\''+Blog.esc(p.cover_url)+'\')"></div>'
+        ? '<div class="pcard-cover" style="--cover:url(\''+Blog.esc(p.cover_url)+'\')"><img class="pcard-img" src="'+Blog.esc(p.cover_url)+'" alt="" loading="lazy"></div>'
         : '<div class="pcard-cover noimg"><span class="ph">Sarah Talks</span></div>';
       var tag = p.tag ? '<span class="tag">'+Blog.esc(p.tag)+'</span>' : '';
       var ex = p.excerpt ? '<p>'+Blog.esc(p.excerpt)+'</p>' : '';
-      return '<a class="pcard" href="post.html?slug='+encodeURIComponent(p.slug)+'">'
+      var card = '<a class="pcard" href="post.html?slug='+encodeURIComponent(p.slug)+'">'
         + cover
         + '<div class="pcard-body">'+tag+'<h3>'+Blog.esc(p.title)+'</h3>'+ex
         + '<span class="meta">'+Blog.esc(p.author_name||'Sarah')+' · '+fmt(p.published_at||p.created_at)+'</span>'
         + '</div></a>';
+      if(admin){
+        return '<div class="pcard-wrap">'+card+'<a class="pcard-edit" href="write.html?edit='+encodeURIComponent(p.slug)+'">✎ Edit</a></div>';
+      }
+      return card;
     }).join('');
   }).catch(function(){
     list.innerHTML = '<p class="blog-empty">Could not load posts right now.</p>';
