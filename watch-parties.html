@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Watch Parties · Sarah Talks</title>
-<meta name="description" content="Sarah Talks live watch parties: watch the show with Sarah in real life, meet reality TV stars, themed cocktails and photos. Next up: Nashville, Sept 3.">
+<meta name="description" content="Sarah Talks live watch parties: watch the show with Sarah in real life, meet reality TV stars, themed cocktails and photos. Nashville just wrapped, and the 2027 tour is coming. Tell us which city to bring it to.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Pinyon+Script&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=3">
+<link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
 <header class="nav"><div class="wrap nav-in">
@@ -23,7 +23,7 @@
       <a href="book.html">Book Sarah</a>
       <a href="https://app.sarahtalks.tv" class="nav-login">Log In</a>
     </div>
-    <a href="#upcoming" class="btn btn-primary">Get Tickets</a>
+    <a href="#tour" class="btn btn-primary">Request your city</a>
     <button class="toggle" id="themeBtn" aria-label="Toggle theme"></button>
     <button class="menu-btn" id="menuBtn" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
   </nav>
@@ -33,39 +33,43 @@
   <section class="hero">
     <div class="blob a"></div><div class="blob b"></div>
     <div class="wrap hero-in">
-      <span class="kicker"><span class="dot"></span> Next up: Nashville &middot; Sept 3</span>
+      <span class="kicker"><span class="dot"></span> Nashville just wrapped &middot; 2027 tour next</span>
       <h1 class="title">Watch it live,<span class="script">in real life</span></h1>
-      <p class="lede">Sarah's watch parties bring the group chat off the screen and into the room, watch the show on the big screen, meet reality TV stars, themed cocktails, photos, and a whole night with your people.</p>
+      <p class="lede">Sarah's watch parties bring the group chat off the screen and into the room: the show on the big screen, reality TV stars you can actually meet, themed cocktails, photos, and a whole night with your people. Nashville was one for the books, and we're already picking the next cities.</p>
       <div class="cta-row">
-        <a href="https://www.eventbrite.com/e/bb28-watch-party-meet-n-greet-tickets-1995803039617?aff=oddtdtcreator" target="_blank" rel="noopener" class="btn btn-primary">Get Nashville tickets
+        <a href="#tour" class="btn btn-primary">Request your city
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <a href="#host" class="btn btn-ghost">Host one near me</a>
+        <a href="#recap" class="btn btn-ghost">See the recap</a>
       </div>
     </div>
   </section>
 
-  <!-- UPCOMING -->
-  <section id="upcoming" class="band">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="eyebrow">Upcoming</span>
-        <h2>Get your <span class="script">tickets</span></h2>
-        <p>Limited spots, these sell out. Grab yours before they're gone.</p>
+  <!-- 2027 TOUR + CITY REQUEST -->
+  <section id="tour" class="band">
+    <div class="wrap" style="max-width:820px">
+      <div class="sec-head" style="margin-bottom:26px">
+        <span class="eyebrow">The 2027 Tour</span>
+        <h2>See you in <span class="script">2027</span></h2>
+        <p>Nashville was just the start. We're mapping out the 2027 watch party tour right now, and the cities with the most fans asking are the ones we come to first. Tell us where you want Sarah to bring the party.</p>
       </div>
-      <div class="event">
-        <div class="edate"><div class="m">Sep</div><div class="d">3</div></div>
-        <div class="einfo">
-          <span class="epill">On sale now</span>
-          <h3>BB28 Watch Party &amp; Meet-N-Greet</h3>
-          <div class="meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg> Thu, Sep 3 · 5:30 to 10:30 PM</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 0 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> BoomBozz Craft Pizza &amp; Taphouse, East Nashville, TN</span>
-          </div>
-          <p class="muted" style="margin:10px 0 0;font-size:.95rem">Featuring Rachel Riley, Jimmy Heagerty &amp; Cameron Hardin. Themed cocktails, pro photography, and the show on the big screen with Sarah.</p>
+      <form class="form card" id="tourForm">
+        <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden"><label>Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="row">
+          <div class="field"><label for="tCity">City you want us in *</label><input id="tCity" name="city" required placeholder="e.g. Atlanta"></div>
+          <div class="field"><label for="tRegion">State / country (optional)</label><input id="tRegion" name="region" placeholder="e.g. GA"></div>
         </div>
-        <a href="https://www.eventbrite.com/e/bb28-watch-party-meet-n-greet-tickets-1995803039617?aff=oddtdtcreator" target="_blank" rel="noopener" class="btn btn-primary">Tickets
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
+        <div class="row">
+          <div class="field"><label for="tName">Your name (optional)</label><input id="tName" name="name" placeholder="First name"></div>
+          <div class="field"><label for="tEmail">Email (optional)</label><input id="tEmail" name="email" type="email" placeholder="So we can tell you when we're coming"></div>
+        </div>
+        <div class="field"><label for="tNote">Anything else? (optional)</label><input id="tNote" name="note" placeholder="A venue idea, how many friends you'd bring, a show you'd love…"></div>
+        <div>
+          <button type="submit" class="btn btn-primary">Add my city
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.5 7-11a7 7 0 0 0-14 0c0 5.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></button>
+          <p id="tourNote" class="muted" style="display:none;margin-top:12px;font-size:.92rem"></p>
+        </div>
+      </form>
+      <p class="muted" style="text-align:center;margin-top:16px;font-size:.92rem">The more people who ask for your city, the higher it climbs the list.</p>
     </div>
   </section>
 
@@ -84,13 +88,28 @@
     </div>
   </section>
 
-  <!-- PAST: DALLAS -->
-  <section class="band">
+  <!-- RECAP: NASHVILLE (most recent) -->
+  <section id="recap" class="band">
     <div class="wrap">
       <div class="sec-head">
         <span class="eyebrow">Last time</span>
+        <h2>Nashville was <span class="script">unreal</span></h2>
+        <p>A packed house at BoomBozz, meet-and-greets with Rachel Riley, Jimmy Heagerty &amp; Cameron Hardin, themed cocktails, and a whole lot of tea. The full photo gallery is dropping here soon.</p>
+      </div>
+      <div class="cta-row" style="justify-content:center;margin-top:4px">
+        <a href="#tour" class="btn btn-primary">Bring the next one to your city
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECAP: DALLAS -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Before that</span>
         <h2>Dallas was <span class="script">unreal</span></h2>
-        <p>A packed house, meet-and-greets, and a whole lot of tea. Here's a taste, Nashville's next.</p>
+        <p>The one that started it all, a packed house, meet-and-greets, and a whole lot of tea.</p>
       </div>
       <div class="mosaic">
         <div class="tile big"><img src="assets/dallas/d10.jpg" alt="Sarah with fans at the Dallas watch party" loading="lazy"></div>
@@ -112,10 +131,6 @@
         <div class="tile wide"><img src="assets/dallas/d19.jpg" alt="Watch party fun" loading="lazy"></div>
         <div class="tile"><img src="assets/dallas/d02.jpg" alt="Guests at the Dallas watch party" loading="lazy"></div>
       </div>
-      <div class="cta-row" style="justify-content:center;margin-top:26px">
-        <a href="https://www.eventbrite.com/e/bb28-watch-party-meet-n-greet-tickets-1995803039617?aff=oddtdtcreator" target="_blank" rel="noopener" class="btn btn-primary">Be in the Nashville photos
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
     </div>
   </section>
 
@@ -124,10 +139,10 @@
     <div class="wrap">
       <div class="final">
         <h2><span class="script">Bring</span> a party to your city</h2>
-        <p>Want Sarah at a watch party near you, or run a venue that should host one? Let's talk.</p>
+        <p>Run a venue that should host one, or want to partner on a stop? Let's talk. Just a fan? Add your city above and we'll aim for the places asking loudest.</p>
         <div class="cta-row">
           <a href="book.html" class="btn btn-primary" style="background:#2a1620">Get in touch</a>
-          <a href="https://www.eventbrite.com/e/bb28-watch-party-meet-n-greet-tickets-1995803039617?aff=oddtdtcreator" target="_blank" rel="noopener" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.5)">Nashville tickets</a>
+          <a href="#tour" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.5)">Request your city</a>
         </div>
       </div>
     </div>
@@ -152,6 +167,6 @@
     <a class="plug" href="https://kinetic-mgmt.com" target="_blank" rel="noopener">Built &amp; managed by <b>Kinetic Management</b>, social, branding, sites, podcasts &amp; partnerships &rarr;</a>
   </div>
 </div></footer>
-<script src="app.js?v=3"></script>
+<script src="app.js?v=4"></script>
 </body>
 </html>

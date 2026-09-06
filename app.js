@@ -66,4 +66,51 @@
       if (submit) { submit.disabled = false; submit.innerHTML = restore; }
     });
   });
+
+  // Tour city-request form -> inserts straight into Supabase (tour_requests table).
+  var TOUR_URL = 'https://mnuhcigcfakypdiycagw.supabase.co/rest/v1/tour_requests';
+  var TOUR_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo';
+  var tf = document.getElementById('tourForm');
+  if (tf) tf.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var g = function (n) { var el = tf.elements[n]; return el ? el.value.trim() : ''; };
+    var note = document.getElementById('tourNote');
+    var submit = tf.querySelector('button[type="submit"]');
+    var restore = submit ? submit.innerHTML : '';
+    function say(msg, ok) {
+      if (!note) return;
+      note.style.display = 'block';
+      note.textContent = msg;
+      note.style.color = ok ? 'var(--sage)' : 'var(--rasp)';
+    }
+    if (g('website')) return;            // honeypot: silently drop bots
+    if (!g('city')) { say('Add a city first.', false); return; }
+    if (submit) { submit.disabled = true; submit.textContent = 'Adding…'; }
+
+    fetch(TOUR_URL, {
+      method: 'POST',
+      headers: {
+        'apikey': TOUR_ANON, 'Authorization': 'Bearer ' + TOUR_ANON,
+        'Content-Type': 'application/json', 'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        city: g('city'), region: g('region') || null,
+        name: g('name') || null, email: g('email') || null, note: g('note') || null
+      })
+    })
+    .then(function (r) {
+      if (r.ok) {
+        tf.reset();
+        say('Got it! Your city is on the list. The more people who ask, the higher it climbs.', true);
+        if (submit) { submit.disabled = false; submit.textContent = 'Added ✓'; }
+      } else {
+        say('Something went wrong. Try again, or email sarah@sarahtalks.tv.', false);
+        if (submit) { submit.disabled = false; submit.innerHTML = restore; }
+      }
+    })
+    .catch(function () {
+      say('Could not send. Try again, or email sarah@sarahtalks.tv.', false);
+      if (submit) { submit.disabled = false; submit.innerHTML = restore; }
+    });
+  });
 })();
