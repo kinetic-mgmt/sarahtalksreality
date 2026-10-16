@@ -274,6 +274,14 @@ html{overflow-x:hidden}
 .about-photo{margin:0;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .about-photo img{width:100%;height:auto;display:block}
 .about-photo figcaption{font-size:.82rem;color:var(--muted);padding:10px 14px;background:var(--surface);text-align:center}
+.about-portrait{margin:0;border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.about-portrait img{width:100%;height:auto;display:block}
+.about-copy .about-photo{margin:26px 0}
+.about-duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:26px 0;align-items:start}
+.about-duo figure{margin:0;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--surface)}
+.about-duo img{width:100%;height:auto;display:block}
+.about-duo figcaption{font-size:.82rem;color:var(--muted);padding:10px 14px;text-align:center}
+@media(max-width:560px){.about-duo{grid-template-columns:1fr}}
 .about-stats{display:grid;grid-template-columns:1fr;gap:12px}
 @media(max-width:860px){.about-grid{grid-template-columns:1fr;gap:34px}.about-side{position:static}.about-stats{grid-template-columns:1fr 1fr 1fr}}
 
