@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quick question · Sarah's BB Bible</title>
+<meta name="description" content="60-second survey from Sarah's BB Bible.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff9f6; --bg2:#feeef1; --surface:#ffffff; --blush2:#fdebee;
+    --ink:#4a2e38; --muted:#8a6b74; --line:rgba(74,46,56,.14);
+    --rose-deep:#e07385; --rasp:#d6436e;
+    --grad:linear-gradient(122deg,#e07385 0%,#d6436e 55%,#c9963f 120%);
+    --shadow:0 20px 50px -22px rgba(74,46,56,.34);
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --bg:#171215; --bg2:#1e151a; --surface:#221b20; --blush2:#33242b;
+    --ink:#f3e8eb; --muted:#b69ba4; --line:rgba(255,255,255,.12);
+    --shadow:0 24px 60px -22px rgba(0,0,0,.72);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#171215; --bg2:#1e151a; --surface:#221b20; --blush2:#33242b;
+    --ink:#f3e8eb; --muted:#b69ba4; --line:rgba(255,255,255,.12);
+    --shadow:0 24px 60px -22px rgba(0,0,0,.72);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;
+    -webkit-font-smoothing:antialiased;min-height:100vh;
+    background-image:radial-gradient(130% 60% at 50% -10%, var(--bg2), var(--bg) 60%);}
+  .wrap{max-width:560px;margin:0 auto;padding:40px 18px 60px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:28px 24px}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--rasp)}
+  h1{font-family:"Playfair Display",serif;font-weight:800;font-size:1.9rem;line-height:1.1;margin:8px 0 6px}
+  .lede{color:var(--muted);margin:0 0 22px;font-size:1rem}
+  .q{margin:22px 0 0}
+  .q>label.qlabel{display:block;font-weight:700;font-size:1.02rem;margin-bottom:10px}
+  .opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:9px;cursor:pointer;transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--rose-deep)}
+  .opt input{accent-color:var(--rasp);width:18px;height:18px;flex:none}
+  .opt.sel{border-color:var(--rasp);background:var(--blush2)}
+  select,textarea,input[type=email]{font-family:inherit;font-size:1rem;color:var(--ink);background:var(--bg);
+    border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;width:100%}
+  textarea{min-height:84px;resize:vertical}
+  .hint{color:var(--muted);font-size:.86rem;margin:6px 2px 0}
+  .btn{margin-top:26px;width:100%;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:1.02rem;
+    padding:15px 24px;border-radius:999px;color:#fff;background:var(--grad);box-shadow:var(--shadow);
+    transition:transform .15s ease,filter .15s ease}
+  .btn:hover{transform:translateY(-1px);filter:saturate(1.06)}
+  .btn:disabled{opacity:.6;cursor:default;transform:none}
+  .done{text-align:center;padding:20px 6px}
+  .done .big{font-family:"Playfair Display",serif;font-weight:800;font-size:2rem;margin:10px 0 6px}
+  .foot{text-align:center;color:var(--muted);font-size:.8rem;margin-top:22px}
+  .foot a{color:var(--rasp)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="eyebrow">Sarah's BB Bible</div>
+      <h1>Can we ask you one quick thing?</h1>
+      <p class="lede">You signed up but haven't jumped into the paid side yet, and that's totally fine. 60 seconds of honesty here shapes what we build next. Thank you.</p>
+
+      <form id="form">
+        <div class="q" data-name="reason">
+          <label class="qlabel">What's the main reason you haven't subscribed?</label>
+          <label class="opt"><input type="radio" name="reason" value="Too pricey"><span>It's too pricey</span></label>
+          <label class="opt"><input type="radio" name="reason" value="Enough is free"><span>There's enough for me for free</span></label>
+          <label class="opt"><input type="radio" name="reason" value="Didn't know what's paid"><span>I didn't really know what's paid</span></label>
+          <label class="opt"><input type="radio" name="reason" value="Waiting for Big Brother"><span>I'm waiting for Big Brother to come back</span></label>
+          <label class="opt"><input type="radio" name="reason" value="Something else"><span>Something else</span></label>
+        </div>
+
+        <div class="q">
+          <label class="qlabel" for="show">Which show do you care about most?</label>
+          <select id="show" name="top_show">
+            <option value="">Pick one…</option>
+            <option>Big Brother</option>
+            <option>Survivor</option>
+            <option>The Traitors</option>
+            <option>Drag Race</option>
+            <option>The Voice</option>
+            <option>Dancing with the Stars</option>
+            <option>All Stars</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="q">
+          <label class="qlabel" for="worth">What would make it worth paying for?</label>
+          <textarea id="worth" name="worth" placeholder="Be honest — anything at all."></textarea>
+        </div>
+
+        <div class="q" data-name="discount">
+          <label class="qlabel">Would a discount get you to try it?</label>
+          <label class="opt"><input type="radio" name="discount" value="Yes"><span>Yes</span></label>
+          <label class="opt"><input type="radio" name="discount" value="Maybe"><span>Maybe</span></label>
+          <label class="opt"><input type="radio" name="discount" value="No"><span>No</span></label>
+        </div>
+
+        <div class="q">
+          <label class="qlabel" for="email">Want us to follow up with a deal? (optional)</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com">
+          <p class="hint">Only if you want it. We won't share it.</p>
+        </div>
+
+        <button class="btn" type="submit" id="submit">Send it →</button>
+      </form>
+    </div>
+    <p class="foot">Powered by Kinetic Management</p>
+  </div>
+
+<script>
+  var SUPA="https://mnuhcigcfakypdiycagw.supabase.co";
+  var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo";
+  // Highlight the selected radio row
+  document.querySelectorAll('input[type=radio]').forEach(function(r){
+    r.addEventListener('change', function(){
+      document.querySelectorAll('input[name="'+r.name+'"]').forEach(function(o){ o.closest('.opt').classList.toggle('sel', o.checked); });
+    });
+  });
+  function val(name){ var el=document.querySelector('input[name="'+name+'"]:checked'); return el?el.value:null; }
+  document.getElementById('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn=document.getElementById('submit'); btn.disabled=true; btn.textContent='Sending…';
+    var body={
+      p_reason: val('reason'),
+      p_top_show: document.getElementById('show').value || null,
+      p_worth: document.getElementById('worth').value || null,
+      p_discount: val('discount'),
+      p_email: document.getElementById('email').value || null
+    };
+    fetch(SUPA+"/rest/v1/rpc/submit_survey",{
+      method:"POST",
+      headers:{ "Content-Type":"application/json", "apikey":ANON, "Authorization":"Bearer "+ANON },
+      body: JSON.stringify(body)
+    }).then(function(){
+      document.getElementById('card').innerHTML=
+        '<div class="done"><div class="eyebrow">Sarah’s BB Bible</div>'+
+        '<div class="big">Thank you 💛</div>'+
+        '<p class="lede">This genuinely helps. A lot is live in the app right now — Survivor, The Traitors, The Voice and Dancing with the Stars — come hang out.</p>'+
+        '<a class="btn" style="display:inline-block;text-decoration:none;max-width:260px" href="app.html">Open the app →</a></div>';
+      window.scrollTo(0,0);
+    }).catch(function(){
+      btn.disabled=false; btn.textContent='Send it →';
+      alert("Hmm, that didn't go through. Please try once more.");
+    });
+  });
+</script>
+</body>
+</html>
