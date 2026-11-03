@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unsubscribe · Sarah's BB Bible</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{ --bg:#fff9f6; --bg2:#feeef1; --surface:#fff; --ink:#4a2e38; --muted:#8a6b74; --line:rgba(74,46,56,.14); --rasp:#d6436e; --rose-deep:#e07385; --grad:linear-gradient(122deg,#e07385 0%,#d6436e 55%,#c9963f 120%); --shadow:0 20px 50px -22px rgba(74,46,56,.34); }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --bg:#171215; --bg2:#1e151a; --surface:#221b20; --ink:#f3e8eb; --muted:#b69ba4; --line:rgba(255,255,255,.12); --shadow:0 24px 60px -22px rgba(0,0,0,.72);} }
+  :root[data-theme="dark"]{ --bg:#171215; --bg2:#1e151a; --surface:#221b20; --ink:#f3e8eb; --muted:#b69ba4; --line:rgba(255,255,255,.12); }
+  *{box-sizing:border-box} body{margin:0;min-height:100vh;background:var(--bg);background-image:radial-gradient(130% 60% at 50% -10%, var(--bg2), var(--bg) 60%);color:var(--ink);font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{max-width:460px;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:30px 26px;text-align:center}
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--rasp)}
+  h1{font-family:"Playfair Display",serif;font-weight:800;font-size:1.7rem;margin:10px 0 8px}
+  p{color:var(--muted);margin:0 0 6px;font-size:1rem;line-height:1.55}
+  .btn{display:inline-block;margin-top:18px;border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:1rem;padding:13px 26px;border-radius:999px;color:#fff;text-decoration:none;background:var(--grad);box-shadow:var(--shadow)}
+  .foot{color:var(--muted);font-size:.78rem;margin-top:20px}
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="eyebrow">Sarah's BB Bible</div>
+    <h1>One sec…</h1>
+    <p>Updating your preferences.</p>
+  </div>
+<script>
+  var SUPA="https://mnuhcigcfakypdiycagw.supabase.co";
+  var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1udWhjaWdjZmFreXBkaXljYWd3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM3OTIxMDksImV4cCI6MjA5OTM2ODEwOX0.Nz0pWjbzu47ud0kHHybg9T9z76H6ZuR-tstu-XPvFNo";
+  function card(title, msg){
+    document.getElementById('card').innerHTML='<div class="eyebrow">Sarah’s BB Bible</div><h1>'+title+'</h1><p>'+msg+'</p><a class="btn" href="index.html">Back to sarahtalks.tv</a><div class="foot">Changed your mind? You can always re-subscribe in the app.</div>';
+  }
+  var t=new URLSearchParams(location.search).get('t');
+  if(!t){ card('Hmm', 'This unsubscribe link looks incomplete. If you meant to opt out, just reply to the email and we’ll take care of it.'); }
+  else{
+    fetch(SUPA+"/rest/v1/rpc/unsubscribe_by_token",{method:"POST",headers:{"Content-Type":"application/json","apikey":ANON,"Authorization":"Bearer "+ANON},body:JSON.stringify({p_token:t})})
+      .then(function(r){return r.json();})
+      .then(function(j){ if(j&&j.ok){ card('You’re unsubscribed', 'You won’t get these emails from us anymore. Sorry to see you go — you’re always welcome back.'); } else { card('All set', 'You’re unsubscribed. If anything still comes through, reply and we’ll fix it.'); } })
+      .catch(function(){ card('Almost', 'We couldn’t reach the server. Please try the link again in a moment.'); });
+  }
+</script>
+</body>
+</html>
